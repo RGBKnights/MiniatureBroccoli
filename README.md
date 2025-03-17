@@ -1,112 +1,125 @@
-# vibe-coding
-Template to get start with vibe coding with Claude in a Dev Container.
+# Azure Function with Markitdown
 
-## Setup
+An Azure Function Application that leverages the Markitdown Python library to provide file conversion to markdown via a serverless API.
 
-1. Install VS Code and Docker for multiple isolated environments for vibe coding.
-2. Create a new Repository based on this repository.
-3. Run `Dev Container - Reopen in Container` from the VSCode command palette.
-4. Start Claude Code; Run `claude` to launch REPL.
-5. Complete authentication. Follow the one-time OAuth process with your Console account. You’ll need active billing at [console.anthropic](https://console.anthropic.com/).
-6. Start vibing 🎉
+## Features
 
-| Platform | VSCode Installation | Docker Installation |
-|----------|----------------------|---------------------|
-| Windows  | [VSCode](https://code.visualstudio.com/docs/setup/windows) | [Docker](https://docs.docker.com/desktop/setup/install/windows-install/) |
-| Mac      | [VSCode](https://code.visualstudio.com/docs/setup/mac)     | [Docker](https://docs.docker.com/desktop/setup/install/mac-install/)     |
-| Linux    | [VSCode](https://code.visualstudio.com/docs/setup/linux)   | [Docker](https://docs.docker.com/desktop/setup/install/linux/ubuntu/)    |
+- RESTful API powered by the Markitdown Python library
+- File format conversion to markdown
+- Support for multiple document types (PDF, Word, PowerPoint, etc.)
 
+## Prerequisites
 
-## CLI Commands
+- Python 3.10+
+- Azure Functions Core Tools
+- Azure CLI (for deployment)
+- Azure Subscription
 
-Control Claude Code with commands:
+## Installation
 
-| Command                | Description                        | Example                                |
-|------------------------|------------------------------------|----------------------------------------|
-| `claude`               | Start interactive REPL             | `claude`                               |
-| `claude "query"`       | Start REPL with initial prompt     | `claude "explain this project"`        |
-| `claude -p "query"`    | Run one-off query, then exit       | `claude -p "explain this function"`    |
-| `cat file \| claude -p "query"` | Process piped content            | `cat logs.txt \| claude -p "explain"`  |
-| `claude config`        | Configure settings                 | `claude config set --global theme dark`|
-| `claude update`        | Update to latest version           | `claude update`                        |
-| `claude mcp`           | Configure Model Context Protocol servers | See MCP section in tutorials           |
+### Optional Dependencies
 
-CLI flags:
+At the moment, the following optional dependencies are available:
+[all] Installs all optional dependencies
+[pptx] Installs dependencies for PowerPoint files
+[docx] Installs dependencies for Word files
+[xlsx] Installs dependencies for Excel files
+[xls] Installs dependencies for older Excel files
+[pdf] Installs dependencies for PDF files
+[outlook] Installs dependencies for Outlook messages
+[az-doc-intel] Installs dependencies for Azure Document Intelligence
+[audio-transcription] Installs dependencies for audio transcription of wav and mp3 files
 
-- --print: Print response without interactive mode
-- --verbose: Enable verbose logging
-- --dangerously-skip-permissions: Skip permission prompts (only in Docker containers without internet)
+### Local Development
 
-## Slash Commands
+```bash
+# Clone the repository
+git clone https://github.com/RGBKnights/MiniatureBroccoli.git
+cd MiniatureBroccoli
 
-Control Claude’s behavior within a session:
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-| Command          | Purpose                                      |
-|------------------|----------------------------------------------|
-| /bug             | Report bugs (sends conversation to Anthropic)|
-| /clear           | Clear conversation history                   |
-| /compact         | Compact conversation to save context space   |
-| /config          | View/modify configuration                    |
-| /cost            | Show token usage statistics                  |
-| /doctor          | Checks the health of your Claude Code installation |
-| /help            | Get usage help                               |
-| /init            | Initialize project with CLAUDE.md guide      |
-| /login           | Switch Anthropic accounts                    |
-| /logout          | Sign out from your Anthropic account         |
-| /pr_comments     | View pull request comments                   |
-| /review          | Request code review                          |
-| /terminal-setup  | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |
+# Install Markitdown with required extensions
+pip install markitdown[all]
 
-## Manage permissions and security
+# Install additional dependencies
+pip install -r requirements.txt
 
-Claude Code uses a tiered permission system to balance power and safety:
+# Start the function app locally
+func start
+```
 
-| Tool Type        | Example                | Approval Required | ”Yes, don’t ask again” Behavior |
-|------------------|------------------------|-------------------|---------------------------------|
-| Read-only        | File reads, LS, Grep   | No                | N/A                             |
-| Bash Commands    | Shell execution        | Yes               | Permanently per project directory and command |
-| File Modification| Edit/write files       | Yes               | Until session end               |
+### Azure Deployment
 
-## Tools available to Claude
+```bash
+# Login to Azure
+az login
 
-Claude Code has access to a set of powerful tools that help it understand and modify your codebase:
+# Create resource group (if needed)
+az group create --name YourResourceGroup --location YourLocation
 
-| Tool               | Description                                      | Permission Required |
-|--------------------|--------------------------------------------------|---------------------|
-| AgentTool          | Runs a sub-agent to handle complex, multi-step tasks | No                  |
-| BashTool           | Executes shell commands in your environment      | Yes                 |
-| GlobTool           | Finds files based on pattern matching            | No                  |
-| GrepTool           | Searches for patterns in file contents           | No                  |
-| LSTool             | Lists files and directories                      | No                  |
-| FileReadTool       | Reads the contents of files                      | No                  |
-| FileEditTool       | Makes targeted edits to specific files           | Yes                 |
-| FileWriteTool      | Creates or overwrites files                      | Yes                 |
-| NotebookReadTool   | Reads and displays Jupyter notebook contents     | No                  |
-| NotebookEditTool   | Modifies Jupyter notebook cells                  | Yes                 |
+# Create storage account
+az storage account create --name YourStorageAccount --resource-group YourResourceGroup --location YourLocation --sku Standard_LRS
 
-## Protect against prompt injection
+# Create function app with Python support
+az functionapp create --name YourFunctionApp --resource-group YourResourceGroup --consumption-plan-location YourLocation --storage-account YourStorageAccount --runtime python --functions-version 4 --os-type Linux --runtime-version 3.10
 
-Prompt injection is a technique where an attacker attempts to override or manipulate an AI assistant’s instructions by inserting malicious text. Claude Code includes several safeguards against these attacks:
+# Add application settings if needed
+az functionapp config appsettings set --name YourFunctionApp --resource-group YourResourceGroup --settings "MARKITDOWN_MAX_FILE_SIZE=25000000"
 
-- Permission system: Sensitive operations require explicit approval
-- Context-aware analysis: Detects potentially harmful instructions by analyzing the full request
-- Input sanitization: Prevents command injection by processing user inputs
-- Command blocklist: Blocks risky commands that fetch arbitrary content from the web like curl and wget
+# Update requirements.txt to include markitdown and extensions
+echo "markitdown[all]" >> requirements.txt
 
-Best practices for working with untrusted content:
-- Review suggested commands before approval
-- Avoid piping untrusted content directly to Claude
-- Verify proposed changes to critical files
-- Report suspicious behavior with /bug
+# Deploy the function app
+func azure functionapp publish YourFunctionApp
+```
 
-> [!WARNING]
-> While these protections significantly reduce risk, no system is completely immune to all attacks. Always maintain good security practices when working with any AI tool.
+## API Usage
 
-## Set up Model Context Protocol (MCP)
+The API provides a single endpoint that processes various file types supported by the Microsoft Markitdown library and returns processed markdown content.
 
-Model Context Protocol (MCP) is an open protocol that enables LLMs to access external tools and data sources. For more details, see the MCP documentation.
+### Process File
 
-> [!WARNING]
-> Use third party MCP servers at your own risk. Make sure you trust the MCP servers, and be especially careful when using MCP servers that talk to the internet, as these can expose you to prompt injection risk.
+```http
+POST /api/convert
+Content-Type: multipart/form-data
 
-[Configure MCP servers](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials#configure-mcp-servers)
+file: [Binary file content]
+```
+
+This endpoint accepts the following file types:
+
+- PDF
+- PowerPoint
+- Word
+- Excel
+- Images (EXIF metadata and OCR)
+- Audio (EXIF metadata and speech transcription)
+- HTML
+- Text-based formats (CSV, JSON, XML)
+- ZIP files (iterates over contents)
+- EPubs
+
+#### Example usage with cURL:
+
+```bash
+curl -X POST https://your-function-app.azurewebsites.net/api/convert \
+  -F "file=@/path/to/your/document.docx" \
+  -H "Content-Type: multipart/form-data"
+```
+
+#### Response:
+
+```json
+{
+  "filename": "document.docx",
+  "title": "Optional title of the document.",
+  "markdown": "# Converted Document\n\n## Content from Original File\n\nThis is the content that was extracted and converted to markdown..."
+}
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
