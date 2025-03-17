@@ -1,37 +1,49 @@
 # Azure Function Markitdown - TODO List
 
-## High Priority
+## Azure Function Implementation
 - [ ] Set up basic Azure Function project structure
 - [ ] Create requirements.txt with markitdown and dependencies
-- [ ] Implement file upload API endpoint (/api/convert)
-- [ ] Add file type detection and validation
-- [ ] Create core document conversion logic using markitdown
+- [ ] Configure function app settings
+- [ ] Add Azure Application Insights integration
 - [ ] Implement proper error handling and logging
-- [ ] Add basic tests for the API endpoint
+- [ ] Create deployment scripts for Azure
+- [ ] Add CI/CD pipeline (GitHub Actions)
 
-## Medium Priority
-- [ ] Implement file size limits and validation
-- [ ] Add support for converting specific file types:
+## Markitdown Library Integration
+- [ ] Integrate markitdown Python package
+- [ ] Configure markitdown with necessary extensions
+- [ ] Create core document conversion service
+- [ ] Implement file type detection and validation
+- [ ] Add support for primary file types:
   - [ ] PDF documents
   - [ ] Word documents (.docx)
   - [ ] PowerPoint presentations (.pptx)
   - [ ] Excel spreadsheets (.xlsx)
   - [ ] HTML pages
-- [ ] Create local development documentation
-- [ ] Implement response metadata (file type, size, processing time)
-- [ ] Add Azure Application Insights integration
-- [ ] Create deployment scripts
-
-## Low Priority
 - [ ] Add support for additional file types:
   - [ ] Images with OCR
   - [ ] Audio files with transcription
   - [ ] EPub documents
   - [ ] ZIP files
+
+## API Development
+- [ ] Implement file upload API endpoint (/api/convert)
+- [ ] Create request validation middleware
+- [ ] Implement file size limits and validation
+- [ ] Build response formatter with metadata
+- [ ] Add error response handling
+- [ ] Create authentication mechanism for API
+- [ ] Add rate limiting
 - [ ] Implement caching mechanism for frequently accessed documents
-- [ ] Add authentication mechanism for API
-- [ ] Create a simple web interface for file upload
-- [ ] Add Swagger/OpenAPI documentation
+- [ ] Create Swagger/OpenAPI documentation
+
+## Testing and Documentation
+- [ ] Add unit tests for core services
+- [ ] Create integration tests for API endpoints
+- [ ] Implement load testing
+- [ ] Create local development documentation
+- [ ] Document API endpoints and usage examples
+- [ ] Create a simple web interface for testing
 
 ## Completed
 - [x] Create initial repository
