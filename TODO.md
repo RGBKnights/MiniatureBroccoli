@@ -1,13 +1,13 @@
 # Azure Function Markitdown - TODO List
 
 ## Azure Function Implementation
-- [ ] Set up basic Azure Function project structure
-- [ ] Create requirements.txt with markitdown and dependencies
-- [ ] Configure function app settings
-- [ ] Add Azure Application Insights integration
-- [ ] Implement proper error handling and logging
-- [ ] Create deployment scripts for Azure
-- [ ] Add CI/CD pipeline (GitHub Actions)
+- [x] Set up basic Azure Function project structure
+- [x] Create requirements.txt with markitdown and dependencies
+- [x] Configure function app settings
+- [x] Add Azure Application Insights integration
+- [x] Implement proper error handling and logging
+- [x] Create deployment scripts for Azure
+- [x] Add CI/CD pipeline (GitHub Actions)
 
 ## Markitdown Library Integration
 - [ ] Integrate markitdown Python package
