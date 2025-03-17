@@ -1,16 +1,38 @@
-# TODO List
+# Azure Function Markitdown - TODO List
 
 ## High Priority
-- [ ] Task 1
-- [ ] Task 2
+- [ ] Set up basic Azure Function project structure
+- [ ] Create requirements.txt with markitdown and dependencies
+- [ ] Implement file upload API endpoint (/api/convert)
+- [ ] Add file type detection and validation
+- [ ] Create core document conversion logic using markitdown
+- [ ] Implement proper error handling and logging
+- [ ] Add basic tests for the API endpoint
 
 ## Medium Priority
-- [ ] Task 3
-- [ ] Task 4
+- [ ] Implement file size limits and validation
+- [ ] Add support for converting specific file types:
+  - [ ] PDF documents
+  - [ ] Word documents (.docx)
+  - [ ] PowerPoint presentations (.pptx)
+  - [ ] Excel spreadsheets (.xlsx)
+  - [ ] HTML pages
+- [ ] Create local development documentation
+- [ ] Implement response metadata (file type, size, processing time)
+- [ ] Add Azure Application Insights integration
+- [ ] Create deployment scripts
 
 ## Low Priority
-- [ ] Task 5
-- [ ] Task 6
+- [ ] Add support for additional file types:
+  - [ ] Images with OCR
+  - [ ] Audio files with transcription
+  - [ ] EPub documents
+  - [ ] ZIP files
+- [ ] Implement caching mechanism for frequently accessed documents
+- [ ] Add authentication mechanism for API
+- [ ] Create a simple web interface for file upload
+- [ ] Add Swagger/OpenAPI documentation
 
 ## Completed
-- [x] Create initial project structure
+- [x] Create initial repository
+- [x] Document project setup and API usage in README.md
