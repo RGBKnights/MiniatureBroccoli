@@ -3,9 +3,14 @@ import json
 import logging
 import azure.functions as func
 from .logging_config import log_request
+from .converter.file_detector import detect_file_type, get_converter_for_file
+from .converter.markitdown_service import MarkitdownService
 
 # Create the Azure Function app
 app = func.FunctionApp()
+
+# Initialize the markitdown service
+markitdown_service = MarkitdownService()
 
 @app.route(route="convert", auth_level=func.AuthLevel.ANONYMOUS, methods=["POST"])
 def convert_file(req: func.HttpRequest) -> func.HttpResponse:
@@ -28,23 +33,43 @@ def convert_file(req: func.HttpRequest) -> func.HttpResponse:
         
         # Get the file from the request (assuming the first file if multiple are sent)
         file_name = list(req.files.keys())[0]
-        file_content = req.files[file_name]
+        file_content = req.files[file_name].read()  # Read the file content
         logging.info(f"Received file: {file_name}")
         
-        # TODO: Implement file type detection and conversion with Markitdown
-        # For now, return a mock response
-        mock_response = {
-            "filename": file_name,
-            "title": "Mock Document Title",
-            "markdown": "# Mock Document\n\nThis is a mock conversion response. The actual conversion will be implemented soon."
-        }
+        # Detect file type
+        file_extension, mime_type, is_supported = detect_file_type(file_name, file_content)
         
-        # Return the response
-        return func.HttpResponse(
-            json.dumps(mock_response),
-            status_code=200,
-            mimetype="application/json"
-        )
+        # Check if file type is supported
+        if not is_supported:
+            logging.warning(f"Unsupported file type: {file_extension} with MIME type {mime_type}")
+            return func.HttpResponse(
+                json.dumps({
+                    "error": f"Unsupported file type: {file_extension}",
+                    "mime_type": mime_type
+                }),
+                status_code=415,  # Unsupported Media Type
+                mimetype="application/json"
+            )
+        
+        # Get the appropriate converter for the file type
+        converter_type = get_converter_for_file(file_extension, mime_type)
+        
+        # Convert the file to markdown
+        try:
+            result = markitdown_service.convert_to_markdown(file_name, file_content, converter_type)
+            return func.HttpResponse(
+                json.dumps(result),
+                status_code=200,
+                mimetype="application/json"
+            )
+        except ValueError as value_error:
+            # For known validation errors like file size
+            logging.warning(f"Validation error: {str(value_error)}")
+            return func.HttpResponse(
+                json.dumps({"error": str(value_error)}),
+                status_code=400,
+                mimetype="application/json"
+            )
         
     except Exception as e:
         logging.error(f"Error processing request: {str(e)}", exc_info=True)

@@ -10,28 +10,28 @@
 - [x] Add CI/CD pipeline (GitHub Actions)
 
 ## Markitdown Library Integration
-- [ ] Integrate markitdown Python package
-- [ ] Configure markitdown with necessary extensions
-- [ ] Create core document conversion service
-- [ ] Implement file type detection and validation
-- [ ] Add support for primary file types:
-  - [ ] PDF documents
-  - [ ] Word documents (.docx)
-  - [ ] PowerPoint presentations (.pptx)
-  - [ ] Excel spreadsheets (.xlsx)
-  - [ ] HTML pages
-- [ ] Add support for additional file types:
-  - [ ] Images with OCR
-  - [ ] Audio files with transcription
-  - [ ] EPub documents
-  - [ ] ZIP files
+- [x] Integrate markitdown Python package
+- [x] Configure markitdown with necessary extensions
+- [x] Create core document conversion service
+- [x] Implement file type detection and validation
+- [x] Add support for primary file types:
+  - [x] PDF documents
+  - [x] Word documents (.docx)
+  - [x] PowerPoint presentations (.pptx)
+  - [x] Excel spreadsheets (.xlsx)
+  - [x] HTML pages
+- [x] Add support for additional file types:
+  - [x] Images with OCR
+  - [x] Audio files with transcription
+  - [x] EPub documents
+  - [x] ZIP files
 
 ## API Development
-- [ ] Implement file upload API endpoint (/api/convert)
-- [ ] Create request validation middleware
-- [ ] Implement file size limits and validation
-- [ ] Build response formatter with metadata
-- [ ] Add error response handling
+- [x] Implement file upload API endpoint (/api/convert)
+- [x] Create request validation middleware
+- [x] Implement file size limits and validation
+- [x] Build response formatter with metadata
+- [x] Add error response handling
 - [ ] Create authentication mechanism for API
 - [ ] Add rate limiting
 - [ ] Implement caching mechanism for frequently accessed documents

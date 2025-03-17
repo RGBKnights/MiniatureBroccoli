@@ -2,4 +2,6 @@ azure-functions
 markitdown[pdf,docx,pptx,xlsx,html,epub]
 python-dotenv>=0.19.0
 azure-monitor-opentelemetry==1.0.0
+opencensus-ext-azure==1.1.9
 requests
+python-magic
