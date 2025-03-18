@@ -1,6 +1,9 @@
 import azure.functions as func
 import logging
 import json
+from typing import Union, BinaryIO
+from pathlib import Path
+from markitdown import MarkItDown
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -18,17 +21,36 @@ def convert(req: func.HttpRequest) -> func.HttpResponse:
             status_code=400
         )
     
+    # Check if plugins should be enabled
+    enable_plugins = req.params.get('enable_plugins', 'false').lower() == 'true'
+    
+    # Initialize MarkItDown
+    md = MarkItDown(enable_plugins=enable_plugins)
+    
     results = []
     
     for file in files:
-        # Here we would process the file using Markitdown
-        # For now, we'll just return a placeholder markdown content
-        result = {
-            "filename": file.filename,
-            "title": f"Title for {file.filename}",
-            "markdown": f"# Converted Document\n\n## Content from {file.filename}\n\nThis is the content that was extracted and converted to markdown..."
-        }
-        results.append(result)
+        try:
+            # Pass the file stream directly to MarkItDown
+            # The convert method accepts Union[str, requests.Response, Path, BinaryIO]
+            conversion_result = md.convert(file.stream)
+            
+            
+            # Extract the result
+            result = {
+                "filename": file.filename,
+                "title": conversion_result.title if hasattr(conversion_result, 'title') else file.filename,
+                "markdown": conversion_result.text_content
+            }
+            
+            results.append(result)
+            
+        except Exception as e:
+            logging.error(f"Error processing file {file.filename}: {str(e)}")
+            results.append({
+                "filename": file.filename,
+                "error": str(e)
+            })
     
     # Always return an array of results, even for a single file
     return func.HttpResponse(
