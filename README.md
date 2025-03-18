@@ -113,12 +113,21 @@ curl -X POST https://your-function-app.azurewebsites.net/api/convert \
 #### Response:
 
 ```json
-{
-  "filename": "document.docx",
-  "title": "Optional title of the document.",
-  "markdown": "# Converted Document\n\n## Content from Original File\n\nThis is the content that was extracted and converted to markdown..."
-}
+[
+  {
+    "filename": "document.docx",
+    "title": "Optional title of the document.",
+    "markdown": "# Converted Document\n\n## Content from Original File\n\nThis is the content that was extracted and converted to markdown..."
+  },
+  {
+    "filename": "presentation.pptx",
+    "title": "Another document title",
+    "markdown": "# Converted Presentation\n\n## Slide 1\n\nContent from the first slide..."
+  }
+]
 ```
+
+NOTE: The response will always be an array, even when processing a single file.
 
 ## License
 
