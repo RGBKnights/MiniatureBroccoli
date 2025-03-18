@@ -2,7 +2,7 @@
 
 ## Azure Function Implementation
 
-- [x] Set up basic python Azure Function project structure
+- [] Set up basic python Azure Function project structure
 
 ## Markitdown Library Integration
 
