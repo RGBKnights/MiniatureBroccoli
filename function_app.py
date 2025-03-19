@@ -3,7 +3,6 @@ import logging
 import json
 from typing import Union, BinaryIO
 from pathlib import Path
-from markitdown import MarkItDown
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -22,11 +21,8 @@ def convert(req: func.HttpRequest) -> func.HttpResponse:
             status_code=400
         )
     
-    # Check if plugins should be enabled
-    enable_plugins = req.params.get('enable_plugins', 'false').lower() == 'true'
-    
     # Initialize MarkItDown
-    md = MarkItDown(enable_plugins=enable_plugins)
+    # md = MarkItDown(enable_plugins=True)
     
     results = []
     
@@ -34,15 +30,21 @@ def convert(req: func.HttpRequest) -> func.HttpResponse:
         try:
             # Pass the file stream directly to MarkItDown
             # The convert method accepts Union[str, requests.Response, Path, BinaryIO]
-            conversion_result = md.convert(file.stream)
+            # conversion_result = md.convert(file.stream)
+            
+            result = {
+                "filename": "test.docx",
+                "title": "title",
+                "markdown": "#title \n\n ##subtitle testing..."
+            }
             
             
             # Extract the result
-            result = {
-                "filename": file.filename,
-                "title": conversion_result.title if hasattr(conversion_result, 'title') else file.filename,
-                "markdown": conversion_result.text_content
-            }
+            # result = {
+            #     "filename": file.filename,
+            #     "title": conversion_result.title if hasattr(conversion_result, 'title') else file.filename,
+            #     "markdown": conversion_result.text_content
+            # }
             
             results.append(result)
             
