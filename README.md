@@ -1,11 +1,7 @@
 #  Markitdown Web Server
 
-Example:
 
 ```
-from markitdown import MarkItDown
-
-md = MarkItDown(enable_plugins=True) # Set to True to enable plugins
-result = md.convert("test.xlsx")
-print(result.text_content)
+curl --location 'https://miniature-broccoli-afg5gwcsgjcfctf3.canadacentral-01.azurewebsites.net/convert' \
+--form 'file=@"/C:/Users/<user>/Downloads/document.pdf"'
 ```
