@@ -7,6 +7,7 @@ from markitdown import MarkItDown
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
+@app.function_name(name="Convert")
 @app.route(route="convert", methods=["POST"])
 def convert(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
